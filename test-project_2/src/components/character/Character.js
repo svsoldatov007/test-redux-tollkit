@@ -1,10 +1,10 @@
-import { useState, useRef } from 'react'
 import Card from 'react-bootstrap/Card'
 import Button from 'react-bootstrap/Button'
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger'
 import Tooltip from 'react-bootstrap/Tooltip'
 import { useDispatch, useSelector } from 'react-redux'
 import { setCharacterActive } from '../characters/charactersSlice'
+import * as charactersSelectors from '../characters/charactersSelector'
 
 import './card.scss'
 
@@ -12,10 +12,7 @@ const Character = (props) => {
   const { charInfo } = props
   const { id, name, description, price, img, agressive, medicine } = charInfo
   const dispatch = useDispatch()
-  const { characterActive } = useSelector((state) => state.characters)
-  const [show, setShow] = useState(false)
-  const targetMedicine = useRef(null)
-  const targetAggresive = useRef(null)
+  const characterActive = useSelector(charactersSelectors.characterActive)
 
   let descr
   if (description === '' || !description) {

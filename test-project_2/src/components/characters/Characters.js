@@ -4,13 +4,16 @@ import { useEffect } from 'react'
 
 import { fetchAllCharachers } from './charactersSlice'
 import { useHttp } from '../../hooks/http.hook'
+import * as charactersSelectors from './charactersSelector'
+import { filtredCharMassive } from '../toolbar/filtersSelector'
 
 import './characters.scss'
 
 const Characters = () => {
-  const { charMassive, charactersStatus } = useSelector(
-    (state) => state.characters
-  )
+  const charMassive = useSelector(filtredCharMassive)
+  const charactersStatus = useSelector(charactersSelectors.charactersStatus)
+
+  // console.log(charMassive)
 
   const dispatch = useDispatch()
   const { request } = useHttp()
@@ -27,13 +30,22 @@ const Characters = () => {
     return <h5 className="text-center mt-5">Ошибка загрузки</h5>
   }
 
-  const characters = charMassive.map((itemInfo, ind) => (
-    <Character charInfo={itemInfo} key={ind} />
-  ))
+  let content
+  if (charMassive.length) {
+    const characters = charMassive.map((itemInfo, ind) => (
+      <Character charInfo={itemInfo} key={ind} />
+    ))
+    content = <div className="characters__grid">{characters}</div>
+  } else {
+    content = <div className="text-center mt-5"> Таких данных не найдено</div>
+  }
+  // const characters =  charMassive.map((itemInfo, ind) => (
+  //   <Character charInfo={itemInfo} key={ind} />
+  // ))
 
   return (
     <>
-      <div className="characters__grid">{characters}</div>
+      <div>{content}</div>
     </>
   )
 }

@@ -2,16 +2,26 @@ import { useDispatch, useSelector } from 'react-redux'
 import Form from 'react-bootstrap/Form'
 import Modal from 'react-bootstrap/Modal'
 import { Button } from 'react-bootstrap'
-import { closeAddCharModal } from './modalsSlice'
+import {
+  closeAddCharModal,
+  changeNameCharModal,
+  changeImgCharModal,
+  changeDescriptionCharModal,
+  changeMedicineCharModal,
+  changeAgressiveCharModal,
+  changePriceCharModal,
+  resetForm,
+} from './modalsSlice'
 import nextId from 'react-id-generator'
 import { useForm } from 'react-hook-form'
 import { addOneCharacter } from '../characters/charactersSlice'
+import * as modalSelector from './modalsSelector'
 
 const AddCharacterModal = () => {
   const dispatch = useDispatch()
-  const { isAddCharModal } = useSelector((state) => {
-    return state.modals
-  })
+  const isAddCharModal = useSelector(modalSelector.isAddCharModal)
+  const addModal = useSelector(modalSelector.addModal)
+  const { name, img, description, medicine, agressive, price } = addModal
 
   const {
     register,
@@ -20,17 +30,22 @@ const AddCharacterModal = () => {
     formState: { errors },
   } = useForm()
 
+  const closeAndResetModal = () => {
+    reset()
+    dispatch(closeAddCharModal())
+    dispatch(resetForm())
+  }
+
   const onSubmit = (data) => {
     // generate id for the cat
     const id = nextId() + String(Math.floor(Math.random() * 100000))
     dispatch(addOneCharacter({ id, ...data }))
-    reset()
-    dispatch(closeAddCharModal())
+    closeAndResetModal()
   }
 
   return (
     <>
-      <Modal show={isAddCharModal} onHide={() => dispatch(closeAddCharModal())}>
+      <Modal show={isAddCharModal} onHide={() => closeAndResetModal()}>
         <Modal.Header closeButton>
           <Modal.Title>Добавление породы кошки</Modal.Title>
         </Modal.Header>
@@ -42,6 +57,9 @@ const AddCharacterModal = () => {
                 type="text"
                 autoFocus
                 {...register('name', {
+                  value: name,
+                  onChange: (e) =>
+                    dispatch(changeNameCharModal(e.target.value)),
                   required: 'Поле обязательное',
                 })}
               />
@@ -59,6 +77,9 @@ const AddCharacterModal = () => {
                 {...register('price', {
                   required: 'Поле обязательное',
                   valueAsNumber: true,
+                  value: price,
+                  onChange: (e) =>
+                    dispatch(changePriceCharModal(e.target.value)),
                   validate: {
                     positive: (v) =>
                       parseInt(v) > 0
@@ -85,6 +106,9 @@ const AddCharacterModal = () => {
                 as="textarea"
                 rows={3}
                 {...register('description', {
+                  value: description,
+                  onChange: (e) =>
+                    dispatch(changeDescriptionCharModal(e.target.value)),
                   required: 'Поле обязательное',
                 })}
               />
@@ -107,6 +131,8 @@ const AddCharacterModal = () => {
                 placeholder="URL картинки"
                 rows={3}
                 {...register('img', {
+                  value: img,
+                  onChange: (e) => dispatch(changeImgCharModal(e.target.value)),
                   required: 'Поле обязательное',
                 })}
               />
@@ -123,15 +149,11 @@ const AddCharacterModal = () => {
                 label="Этой породе нужна особая медицинаская забота"
                 type={'checkbox'}
                 {...register('medicine', {
-                  required: 'Поле обязательное',
+                  value: medicine,
+                  onChange: (e) =>
+                    dispatch(changeMedicineCharModal(e.target.value)),
                 })}
               />
-
-              {errors.checkbox && (
-                <div className="invalid-feedback" style={{ display: 'block' }}>
-                  {errors.checkbox.message}
-                </div>
-              )}
             </Form.Group>
 
             <Form.Group className="mb-4" controlId="exampleForm.ControlCheck2">
@@ -139,22 +161,15 @@ const AddCharacterModal = () => {
                 label="Эта порода агрессивна"
                 type={'checkbox'}
                 {...register('agressive', {
-                  required: 'Поле обязательное',
+                  value: agressive,
+                  onChange: (e) =>
+                    dispatch(changeAgressiveCharModal(e.target.value)),
                 })}
               />
-
-              {errors.agressive && (
-                <div className="invalid-feedback" style={{ display: 'block' }}>
-                  {errors.agressive.message}
-                </div>
-              )}
             </Form.Group>
 
             <Modal.Footer>
-              <Button
-                variant="secondary"
-                onClick={() => dispatch(closeAddCharModal())}
-              >
+              <Button variant="secondary" onClick={() => closeAndResetModal()}>
                 Close
               </Button>
               <Button

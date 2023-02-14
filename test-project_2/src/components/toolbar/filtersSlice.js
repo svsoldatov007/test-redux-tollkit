@@ -16,16 +16,18 @@ const filtersSlice = createSlice({
       state.searchInput = action.payload
     },
     changeFirstPrice: (state, action) => {
-      if (isNaN(action.payload)) {
+      if (action.payload === '') {
         state.firstPrice = ''
+      } else {
+        state.firstPrice = parseInt(action.payload)
       }
-      state.firstPrice = parseInt(action.payload)
     },
     changeSecondPrice: (state, action) => {
-      if (isNaN(action.payload)) {
+      if (action.payload === '') {
         state.secondPrice = ''
+      } else {
+        state.secondPrice = parseInt(action.payload)
       }
-      state.secondPrice = parseInt(action.payload)
     },
     changeMedicine: (state, action) => {
       state.medicine = action.payload

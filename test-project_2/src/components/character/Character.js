@@ -21,6 +21,8 @@ const Character = (props) => {
     descr = description
   }
 
+  // console.log(id)
+
   return (
     <Card>
       <Card.Img bsPrefix={'card__img'} src={img} />

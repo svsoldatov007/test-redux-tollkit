@@ -64,7 +64,7 @@ const Toolbar = () => {
                 name={'first_price'}
                 value={firstPrice}
                 placeholder="от ... $"
-                onChange={(e) => dispatch(changeFirstPrice(e.target.value))}
+                onInput={(e) => dispatch(changeFirstPrice(e.target.value))}
               />
             </Form.Group>
             <Form.Group controlId="exampleForm.ControlInput3">
@@ -74,7 +74,8 @@ const Toolbar = () => {
                 name={'second_price'}
                 value={secondPrice}
                 placeholder="до ... $"
-                onChange={(e) => dispatch(changeSecondPrice(e.target.value))}
+                onInput={(e) => dispatch(changeSecondPrice(e.target.value))}
+                // onChange={(e) => dispatch(changeSecondPrice(e.target.value))}
               />
             </Form.Group>
           </div>

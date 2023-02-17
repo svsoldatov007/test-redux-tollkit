@@ -6,7 +6,7 @@ const CharactersPage = () => {
   return (
     <>
       <Container>
-        <h2 className="h2-text mt-4">Магазин кошек</h2>
+        <h2 className="h2-text mt-5">Магазин кошек</h2>
         <Toolbar />
 
         <Characters />

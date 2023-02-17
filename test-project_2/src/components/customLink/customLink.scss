@@ -1,0 +1,16 @@
+.custom-link {
+  color: #0d6efd;
+  cursor: pointer;
+  text-decoration: none;
+  &_active {
+    color: white;
+    background-color: #0d6efd;
+    border-radius: 7px;
+    padding: 10px;
+
+    &:hover {
+      color: white;
+      background-color: #0b5ed7;
+    }
+  }
+}
